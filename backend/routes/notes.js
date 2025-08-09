@@ -10,10 +10,14 @@ router.get('/', async (req, res) => {
 
 // Create a note
 router.post('/', async (req, res) => {
-  const { title, content } = req.body;
-  const note = new Note({ title, content });
-  await note.save();
-  res.json(note);
+  try {
+    const { title, content, category } = req.body;
+    const newNote = new Note({ title, content, category });
+    await newNote.save();
+    res.json(newNote);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Delete a note
